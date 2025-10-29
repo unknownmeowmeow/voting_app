@@ -111,7 +111,7 @@ class UserPoll{
 
             return res.json({ status: true, result: get_new_polls.result });
         } 
-        catch (error) {
+        catch(error){
             return res.json({ status: false, message: error.message });
         }
     }
