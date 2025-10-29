@@ -1,4 +1,4 @@
-class ValidationHelper{
+class PollValidationHelper{
     /**
      * Validates poll data including the question and options.
      * Checks for required fields, minimum/maximum lengths, and empty options.
@@ -9,7 +9,7 @@ class ValidationHelper{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    validationPoll(poll_data){
+    pollValidation(poll_data){
 
         try{
             const { question, poll } = poll_data;
@@ -46,4 +46,4 @@ class ValidationHelper{
 
 }
 
-export default new ValidationHelper();
+export default new PollValidationHelper();

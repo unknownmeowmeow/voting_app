@@ -1,6 +1,6 @@
 import db from "../Configs/database.js";
 
-class questionModel{
+class UserPollQuestions{
     constructor(connection = db){
         this.db = connection;
     }
@@ -13,7 +13,7 @@ class questionModel{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async insertPollQuestion(create_question, connection = this.db) {
+    async insertPollQuestion(create_question, connection = this.db){
         const response_data = { status: false, result: null, error: null };
         
         try{
@@ -26,7 +26,7 @@ class questionModel{
                 response_data.result = { id: insert_employee_account.insertId };
             } 
             else{
-                response_data.error = "Insert employee data error";
+                response_data.error = "No poll question were inserted.";
             }
         } 
         catch(error){
@@ -46,7 +46,7 @@ class questionModel{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async getAllPolls(poll_fields, poll_where, order_by, poll_values) {
+    async getAllQuestions(poll_fields, poll_where, order_by, poll_values){
         const response_data = { status: false, result: null, error: null };
     
         try {
@@ -76,40 +76,6 @@ class questionModel{
     
         return response_data;
     }
-
-    /**
-     * Retrieves all user_questions records based on given parameters.
-     * @param {string} questions_fields - Fields to select.
-     * @param {string|number} questions_questions_where_clause - WHERE clause condition.
-     * @param {Array} questions_values - Values to bind in the WHERE clause.
-     * @returns {Object} response_data - Object containing status, result array, or error.
-     * Last Updated At: October 28, 2025
-     * @author Keith
-     */
-    async getAllQuestions( questions_fields, questions_where_clause, questions_values){
-        const response_data =  { status: false, result: null, error: null };
-        
-        try{
-            const [get_all_questions] = await this.db.execute(`
-                SELECT ${questions_fields}
-                FROM user_questions
-                WHERE ${questions_where_clause}
-            `, questions_values);
-    
-            if(get_all_questions.length){
-                response_data.status = true;
-                response_data.result = get_all_questions;
-            }
-            else{
-                response_data.error =  `Questions Not Found.`;
-            }
-        }
-        catch(error){
-            response_data.error = error.message;
-        }
-    
-        return response_data;
-    }
 }
 
-export default new questionModel();
+export default new UserPollQuestions();

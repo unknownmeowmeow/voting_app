@@ -1,6 +1,6 @@
 import db from "../Configs/database.js";
 
-class surveyModel{
+class UserPollVotes{
     constructor(connection = db){
         this.db = connection;
     }
@@ -12,7 +12,7 @@ class surveyModel{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async userVote(vote_data){
+    async insertUserVote(vote_data){
         const response_data = { status: false, result: null, error: null };
 
         try{
@@ -37,4 +37,4 @@ class surveyModel{
 
 }
 
-export default new surveyModel();
+export default new UserPollVotes();

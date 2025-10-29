@@ -1,6 +1,6 @@
 import db from "../Configs/database.js";
 
-class UserModel{
+class User{
     constructor(connection = db){
         this.db = connection;
     }
@@ -12,7 +12,7 @@ class UserModel{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async createUserAccount(create_users_account) {
+    async createUserAccount(create_users_account){
         const response_data = { status: false, result: null, error: null };
         
         try{
@@ -22,7 +22,6 @@ class UserModel{
     
             if(insert_users_account.insertId){
                 response_data.status = true;
-                response_data.result = { id: insert_users_account.insertId };
             } 
             else{
                 response_data.error = "Insert users data error";
@@ -70,4 +69,4 @@ class UserModel{
     }
 }
 
-export default new UserModel();
+export default new User();

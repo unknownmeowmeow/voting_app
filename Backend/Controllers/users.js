@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
-import userModel from "../Models/user.js"; 
-import ValidationHelper from '../Helpers/validation_helper.js';
+import user from "../Models/user.js"; 
+import userValidation from '../Helpers/validation_helper.js';
 import database from "../Configs/database.js";
 
 class User{
     constructor(){
-        this.userModel = userModel;
-        this.validationHelper = ValidationHelper;
+        this.user = user;
+        this.userValidation = userValidation;
         this.db = database;
     }
 
@@ -22,7 +22,7 @@ class User{
     async userRegistrations(req, res){
         try{
             /* Validate users registration input fields */
-            const validation_error = this.validationHelper.validateUserRegistration(req.body);
+            const validation_error = this.userValidation.validateUserRegistration(req.body);
     
             if(validation_error.length){
                 throw new Error(validation_error.join(", "));
@@ -31,7 +31,7 @@ class User{
             const { first_name, last_name, email, password} = req.body;
     
             /* Check if email already exists */
-            const email_exist_record = await this.userModel.getUserRecords(
+            const email_exist_record = await this.user.getUserRecords(
                 `email`, 
                 `email = ?`, 
                 [email]
@@ -52,7 +52,7 @@ class User{
             };
     
             /* Create new users account */
-            const create_new_users = await this.userModel.createUserAccount(create_account);
+            const create_new_users = await this.user.createUserAccount(create_account);
     
             if(!create_new_users.status){
                 throw new Error(create_new_users.error);
@@ -76,7 +76,7 @@ class User{
      */
     async userLogin(req, res){
         try{
-            const validation_error = this.validationHelper.validateUserLogin(req.body);
+            const validation_error = this.userValidation.validateUserLogin(req.body);
     
             if(validation_error.length){
                 throw new Error(validation_error.join(", "));
@@ -84,7 +84,7 @@ class User{
     
             const { email, password } = req.body;
     
-            const user_records = await this.userModel.getUserRecords(
+            const user_records = await this.user.getUserRecords(
                 `*`,
                 `email = ?`,
                 [email]

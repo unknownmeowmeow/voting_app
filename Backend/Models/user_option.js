@@ -1,6 +1,6 @@
 import db from "../Configs/database.js";
 
-class pollModel{
+class UserPollOptions{
     constructor(connection = db){
         this.db = connection;
     }
@@ -13,17 +13,13 @@ class pollModel{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async insertPollOptions(option_data, connection = this.db){
+    async insertPollOptions(poll_option_data,poll_option_values, connection = this.db){
         const response_data = { status: false, result: null, error: null };
     
         try{
-            const option_data_map = option_data.map(() => "(?, ?)").join(", ");
-            const options_values = [];
-            option_data.forEach(option => options_values.push(option.question_id, option.name));
-    
             const [insert_poll_options] = await connection.query(
-                `INSERT INTO user_options (question_id, name) VALUES ${option_data_map}`,
-                options_values
+                `INSERT INTO user_options (question_id, name) VALUES ${poll_option_data}`,
+                poll_option_values
             );
     
             if(insert_poll_options.insertId){
@@ -42,4 +38,4 @@ class pollModel{
 
 }
 
-export default new pollModel();
+export default new UserPollOptions();

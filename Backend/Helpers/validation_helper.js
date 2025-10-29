@@ -1,7 +1,13 @@
-class ValidationHelper{
+class UserValidationHelper{
     /**
      * Validates User registration data.
      * @param {Object} user_data - User registration input data.
+     * @param {string[]} user_data.first_name - Array of user_data strings.
+     * @param {string[]} user_data.last_name - Array of user_data strings.
+     * @param {string[]} user_data.first_name - Array of user_data strings.
+     * @param {string[]} user_data.email - Array of user_data strings.
+     * @param {string[]} user_data.password - Array of user_data strings.
+     * @param {string[]} user_data.confirm_password - Array of user_data strings.
      * @returns {Array<string>} errors - Array of error messages, empty if validation passes.
      * Last Updated At: October 22, 2025
      * @author Keith
@@ -86,4 +92,4 @@ class ValidationHelper{
 
 }
 
-export default new ValidationHelper();
+export default new UserValidationHelper();
