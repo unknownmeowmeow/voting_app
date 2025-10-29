@@ -1,9 +1,9 @@
 
 import database from "../Configs/database.js";
 import pollValidation from "../Helpers/poll_validation.js";
-import pollOption from "../Models/user_option.js";
-import pollQuestion from "../Models/user_question.js";
-import pollVotes from "../Models/user_vote.js";
+import PollOption from "../Models/user_option.js";
+import PollQuestion from "../Models/user_question.js";
+import PollVotes from "../Models/user_vote.js";
 import { 
     getUserFromSession 
 } from "../Helpers/validation_session.js";
@@ -12,9 +12,9 @@ class UserPoll{
     constructor(){
         this.pollValidation = pollValidation;
         this.db = database;
-        this.pollOption = pollOption;
-        this.pollQuestion = pollQuestion;
-        this.pollVotes = pollVotes;
+        this.PollOption = PollOption;
+        this.PollQuestion = PollQuestion;
+        this.PollVotes = PollVotes;
     }
 
      /**
@@ -41,7 +41,7 @@ class UserPoll{
 
             const { question, poll } = req.body;
 
-            const get_all_questions = await this.pollQuestion.getAllQuestions(
+            const get_all_questions = await this.PollQuestion.getAllQuestions(
                 `*`,
                 `user_questions.name = ?`,
                 `user_questions.id DESC`,
@@ -53,7 +53,7 @@ class UserPoll{
                 throw new Error("Question Duplicated");
             }
             
-            const get_poll_questions = await this.pollQuestion.insertPollQuestion({ user_id: user.user_id, name: question.trim() },connection);
+            const get_poll_questions = await this.PollQuestion.insertPollQuestion({ user_id: user.user_id, name: question.trim() },connection);
         
             if(!get_poll_questions.status){
               throw new Error(get_poll_questions.error);
@@ -66,7 +66,7 @@ class UserPoll{
             const poll_option_data = poll.map(() => "(?, ?)").join(", ");
             const poll_option_values = poll.flatMap(option => [poll_id, option.trim()]);
     
-            const poll_option_result = await this.pollOption.insertPollOptions(poll_option_data, poll_option_values, connection);
+            const poll_option_result = await this.PollOption.insertPollOptions(poll_option_data, poll_option_values, connection);
            
             if(!poll_option_result.status){
               throw new Error(poll_option_result.error);
@@ -94,7 +94,7 @@ class UserPoll{
      */
     async getNewPolls(req, res){
         try{
-            const get_new_polls = await this.pollQuestion.getAllQuestions(
+            const get_new_polls = await this.PollQuestion.getAllQuestions(
                 `user_questions.id AS question_id, 
                  user_questions.name AS question, 
                  user_options.id AS poll_id, 
@@ -126,7 +126,7 @@ class UserPoll{
      */
     async getTopPolls(req, res){
         try{
-            const get_top_polls = await this.pollQuestion.getAllQuestions(
+            const get_top_polls = await this.PollQuestion.getAllQuestions(
                 `user_questions.id AS question_id,
                  user_questions.name AS question_name,
                  user_options.id AS poll_id,
@@ -161,7 +161,7 @@ class UserPoll{
         
         try{
             const question_id = req.params.id;
-            const get_poll_question = await this.pollQuestion.getAllQuestions(
+            const get_poll_question = await this.PollQuestion.getAllQuestions(
                 `user_questions.id, user_questions.name, user_options.id AS poll_id, user_options.name AS poll_name`,
                 `user_questions.id = ?`,
                 `user_options.id`,
@@ -202,7 +202,7 @@ class UserPoll{
                 question_id 
             };
     
-            const user_vote_result = await this.pollVotes.insertUserVote(vote_data);
+            const user_vote_result = await this.PollVotes.insertUserVote(vote_data);
     
             if(!user_vote_result.status){
                 throw new Error(user_vote_result.error);
@@ -228,7 +228,7 @@ class UserPoll{
         const question_id = req.params.id; 
        
         try{
-            const poll_results = await this.pollQuestion.getAllQuestions(
+            const poll_results = await this.PollQuestion.getAllQuestions(
                 `user_questions.id AS question_id, 
                  user_questions.name AS question, 
                  user_options.id AS poll_id, 

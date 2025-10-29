@@ -1,6 +1,6 @@
 import db from "../Configs/database.js";
 
-class UserPollOptions{
+class UserPollOption{
     constructor(connection = db){
         this.db = connection;
     }
@@ -39,4 +39,4 @@ class UserPollOptions{
 
 }
 
-export default new UserPollOptions();
+export default new UserPollOption();
