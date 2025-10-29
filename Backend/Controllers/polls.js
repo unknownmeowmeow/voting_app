@@ -153,7 +153,6 @@ class UserPoll{
         }
     }
     
-    
     /**
      * Get all poll options for a specific question ID.
      * @param {Object} req - Express request object containing question ID in req.params.id.
@@ -255,7 +254,6 @@ class UserPoll{
             return res.json({ status: false, message: error.message });
         }
     }
-    
 }
 
 export default new UserPoll();
