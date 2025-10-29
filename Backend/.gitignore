@@ -1,0 +1,4 @@
+node_modules/
+.env
+../LEAVEMANAGEMENTSQL.sql
+Backend/Constant/constants.js
