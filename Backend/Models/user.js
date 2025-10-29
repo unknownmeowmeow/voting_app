@@ -16,11 +16,11 @@ class User{
         const response_data = { status: false, result: null, error: null };
         
         try{
-            const [insert_users_account] = await db.query(`
+            const [insert_user_account] = await db.query(`
                 INSERT INTO users SET ?
             `, [create_users_account]);
     
-            if(insert_users_account.insertId){
+            if(insert_user_account.insertId){
                 response_data.status = true;
             } 
             else{

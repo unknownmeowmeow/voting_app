@@ -16,12 +16,12 @@ class UserPollVotes{
         const response_data = { status: false, result: null, error: null };
 
         try{
-            const [insert_votes] = await this.db.query(
+            const [inser_user_votes] = await this.db.query(
                 `INSERT INTO user_votes SET ?`,
                 [vote_data]
             );
 
-            if(insert_votes.insertId){
+            if(inser_user_votes.insertId){
                 response_data.status = true;
             }
             else{
