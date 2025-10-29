@@ -39,10 +39,6 @@ class UserPoll{
               throw new Error(validation_error.join(", "));
             }
 
-            if(!user){
-                throw new Error("user not found");
-            }
-
             const { question, poll } = req.body;
 
             const get_all_questions = await this.pollQuestion.getAllQuestions(
