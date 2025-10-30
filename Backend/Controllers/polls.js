@@ -25,7 +25,7 @@ class UserPoll{
      * Last Updated At: October 28, 2025
      * @author Keith
      */
-    async createPollQuestions(req, res) {
+    async createPollQuestions(req, res){
         const connection = await this.db.getConnection();
       
         try{
@@ -48,7 +48,7 @@ class UserPoll{
                 [question]
               );
               
-    
+            /* check if the question is duplicated */
             if(get_all_questions.status){
                 throw new Error("Question Duplicated");
             }
@@ -95,11 +95,7 @@ class UserPoll{
     async getNewPolls(req, res){
         try{
             const get_new_polls = await this.PollQuestion.getAllQuestions(
-                `user_questions.id AS question_id, 
-                 user_questions.name AS question, 
-                 user_options.id AS poll_id, 
-                 user_options.name AS poll_name, 
-                 user_questions.created_at`,
+                `user_questions.id AS question_id, user_questions.name AS question, user_options.id AS poll_id, user_options.name AS poll_name, user_questions.created_at`,
                 `user_questions.id IS NOT NULL`,
                 `user_questions.created_at DESC`,
                 []
@@ -127,12 +123,7 @@ class UserPoll{
     async getTopPolls(req, res){
         try{
             const get_top_polls = await this.PollQuestion.getAllQuestions(
-                `user_questions.id AS question_id,
-                 user_questions.name AS question_name,
-                 user_options.id AS poll_id,
-                 user_options.name AS poll_name,
-                 COUNT(user_votes.id) AS votes,
-                 user_questions.created_at`,
+                `user_questions.id AS question_id, user_questions.name AS question_name, user_options.id AS poll_id, user_options.name AS poll_name, COUNT(user_votes.id) AS votes, user_questions.created_at`,
                 `user_questions.id IS NOT NULL`,
                 `votes DESC`,
                 []
@@ -158,7 +149,6 @@ class UserPoll{
      * @author Keith
      */
     async getPollId(req, res){
-        
         try{
             const question_id = req.params.id;
             const get_poll_question = await this.PollQuestion.getAllQuestions(
@@ -191,17 +181,12 @@ class UserPoll{
         try{
             const user = getUserFromSession(req);
             const { poll_id, question_id } = req.body;
-    
+
             if(!poll_id || !question_id){
                throw new Error("Missing id's");
             }
 
-            const vote_data = { 
-                user_id: user.user_id,  
-                poll_id, 
-                question_id 
-            };
-    
+            const vote_data = { user_id: user.user_id, poll_id, question_id };
             const user_vote_result = await this.PollVotes.insertUserVote(vote_data);
     
             if(!user_vote_result.status){
@@ -209,7 +194,6 @@ class UserPoll{
             }
     
             return res.json({ status: true, message: "Vote submitted successfully" });
-    
         } 
         catch(error){
             return res.json({ status: false, message: error.message });
@@ -228,13 +212,13 @@ class UserPoll{
         const question_id = req.params.id; 
        
         try{
-            const poll_results = await this.PollQuestion.getAllQuestions(
-                `user_questions.id AS question_id, 
-                 user_questions.name AS question, 
-                 user_options.id AS poll_id, 
-                 user_options.name AS poll_name, 
-                 user_questions.created_at,
-                 COALESCE(user_votes.id, 0) AS votes`,
+            const poll_results = await this.PollQuestion.getAllQuestions(`
+                user_questions.id AS question_id, 
+                user_questions.name AS question, 
+                user_options.id AS poll_id, 
+                user_options.name AS poll_name, 
+                user_questions.created_at,
+                COALESCE(user_votes.id, 0) AS votes`,
                 `user_questions.id = ?`,
                 `user_questions.created_at DESC`,
                 [question_id]
